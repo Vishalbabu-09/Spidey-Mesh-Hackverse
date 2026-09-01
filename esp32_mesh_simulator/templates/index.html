@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Underground Mine Safety Telemetry | Cartoon Doodle Mesh Simulator</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Gaegu:wght@400;700&family=JetBrains+Mono:wght@400;600;800&family=Patrick+Hand&display=swap" rel="stylesheet">
+</head>
+<body class="theme-dark">
+    <!-- Top Global Cartoon Doodle Header -->
+    <header class="app-header">
+        <div class="header-brand">
+            <div class="brand-icon">
+                <!-- 2D Doodle Hard Hat Brand Icon -->
+                <svg viewBox="0 0 32 32" width="34" height="34">
+                    <path d="M5 21 C5 11, 11 6, 16 6 C21 6, 27 11, 27 21 Z" fill="#facc15" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round"/>
+                    <path d="M3 21 C8 24, 24 24, 29 21" stroke="#1f2937" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+                    <rect x="13" y="14" width="6" height="5" rx="1" fill="#1f2937" stroke="#1f2937" stroke-width="1.5"/>
+                    <circle cx="16" cy="16.5" r="1.8" fill="#ffffff"/>
+                    <!-- Coal dust smudges -->
+                    <circle cx="10" cy="13" r="1.5" fill="#4b5563"/>
+                    <circle cx="21" cy="15" r="1.2" fill="#4b5563"/>
+                </svg>
+            </div>
+            <div class="brand-text">
+                <h1>⛏️ MINE SAFETY <span class="highlight-doodle">MESH ADVENTURE</span></h1>
+                <span class="sub-title">ESP32 ESP-NOW Subterranean Network &bull; 2D Cartoon Failover Visualizer</span>
+            </div>
+        </div>
+
+        <div class="header-telemetry">
+            <div class="telemetry-item">
+                <span class="label">SHAFT FORMATION</span>
+                <span class="val highlight" id="headerTopologyName">Hexagon (6 Miners)</span>
+            </div>
+            <div class="telemetry-item">
+                <span class="label">PRIMARY ROUTER</span>
+                <span class="val" id="headerPrimaryGw">ESP32-01</span>
+            </div>
+            <div class="telemetry-item">
+                <span class="label">ACTIVE ROUTER</span>
+                <span class="val gateway-active" id="headerActiveGw">ESP32-01</span>
+            </div>
+            <div class="telemetry-item">
+                <span class="label">SYSTEM STATUS</span>
+                <span class="status-pill status-normal" id="headerStatePill">NORMAL_OPERATION</span>
+            </div>
+            
+            <!-- Doodle Theme Switcher (Dark/Light) -->
+            <button id="themeToggleBtn" class="theme-toggle-btn" title="Toggle Light / Dark Doodle Mode">
+                <span id="themeToggleIcon">☀️</span>
+                <span id="themeToggleText">Light Mode</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main 3-Column Dashboard Container -->
+    <main class="dashboard-grid">
+        <!-- ==================== LEFT PANEL: CONTROL CENTER ==================== -->
+        <aside class="panel left-panel">
+            <div class="panel-header">
+                <h2>
+                    <span class="panel-emoji">🛠️</span>
+                    Mine Shaft Controls
+                </h2>
+            </div>
+
+            <div class="panel-content custom-scrollbar">
+                <!-- 1. Network Geometry Config -->
+                <section class="control-card">
+                    <div class="card-title">
+                        <span>1. Mine Polygon Geometry</span>
+                        <span class="doodle-star">✨</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="nodeCountRange">Worker Helmet Count: <span class="badge-num" id="nodeCountVal">6</span></label>
+                        <input type="range" id="nodeCountRange" min="3" max="16" value="6" step="1">
+                        <div class="polygon-presets">
+                            <button type="button" class="preset-btn" data-count="3">3 Tri</button>
+                            <button type="button" class="preset-btn" data-count="4">4 Sqr</button>
+                            <button type="button" class="preset-btn" data-count="5">5 Pent</button>
+                            <button type="button" class="preset-btn active" data-count="6">6 Hex</button>
+                            <button type="button" class="preset-btn" data-count="8">8 Oct</button>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="initialGatewaySelect">Starting Gateway Router:</label>
+                        <select id="initialGatewaySelect" class="styled-select">
+                            <!-- Populated dynamically -->
+                        </select>
+                    </div>
+
+                    <button id="btnRebuildTopology" class="btn btn-secondary btn-block">
+                        🔄 Rebuild Mine Polygon
+                    </button>
+                </section>
+
+                <!-- 2. Quality Formula Weights -->
+                <section class="control-card">
+                    <div class="card-title">
+                        <span>2. Channel Quality Formula</span>
+                        <span class="doodle-star">⚖️</span>
+                    </div>
+                    <p class="card-desc">Weights determine which miner helmet wins gateway promotion!</p>
+                    
+                    <div class="weight-item">
+                        <div class="weight-label">
+                            <span>📡 RSSI (Signal Strength)</span>
+                            <span class="weight-pct" id="weightRssiVal">30%</span>
+                        </div>
+                        <input type="range" id="weightRssiRange" min="0" max="100" value="30" step="5">
+                    </div>
+
+                    <div class="weight-item">
+                        <div class="weight-label">
+                            <span>📻 SNR (Signal-to-Noise)</span>
+                            <span class="weight-pct" id="weightSnrVal">30%</span>
+                        </div>
+                        <input type="range" id="weightSnrRange" min="0" max="100" value="30" step="5">
+                    </div>
+
+                    <div class="weight-item">
+                        <div class="weight-label">
+                            <span>📦 Packet Reliability (Loss)</span>
+                            <span class="weight-pct" id="weightLossVal">20%</span>
+                        </div>
+                        <input type="range" id="weightLossRange" min="0" max="100" value="20" step="5">
+                    </div>
+
+                    <div class="weight-item">
+                        <div class="weight-label">
+                            <span>🔗 Link Quality (LQI)</span>
+                            <span class="weight-pct" id="weightLinkVal">20%</span>
+                        </div>
+                        <input type="range" id="weightLinkRange" min="0" max="100" value="20" step="5">
+                    </div>
+
+                    <button id="btnApplyWeights" class="btn btn-secondary btn-sm btn-block">Apply Scoring Weights</button>
+                </section>
+
+                <!-- 3. Per-Node Channel Metric Editor -->
+                <section class="control-card highlight-card">
+                    <div class="card-title">
+                        <span>3. Helmet Inspector &amp; Tuner</span>
+                        <span class="selected-node-tag" id="inspectorNodeTag">ESP32-04</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="inspectorNodeSelect">Pick a Miner Helmet to Tune:</label>
+                        <select id="inspectorNodeSelect" class="styled-select">
+                            <!-- Populated dynamically -->
+                        </select>
+                    </div>
+
+                    <div class="metric-input-grid">
+                        <div class="metric-field">
+                            <label>RSSI (dBm) <span class="range-info">[-90 to -30]</span></label>
+                            <div class="input-slider-pair">
+                                <input type="number" id="nodeRssiInput" min="-90" max="-30" step="1">
+                                <input type="range" id="nodeRssiRange" min="-90" max="-30" step="1">
+                            </div>
+                        </div>
+
+                        <div class="metric-field">
+                            <label>SNR (dB) <span class="range-info">[0 to 35]</span></label>
+                            <div class="input-slider-pair">
+                                <input type="number" id="nodeSnrInput" min="0" max="35" step="0.5">
+                                <input type="range" id="nodeSnrRange" min="0" max="35" step="0.5">
+                            </div>
+                        </div>
+
+                        <div class="metric-field">
+                            <label>Packet Loss (%) <span class="range-info">[0 to 100%]</span></label>
+                            <div class="input-slider-pair">
+                                <input type="number" id="nodeLossInput" min="0" max="100" step="0.5">
+                                <input type="range" id="nodeLossRange" min="0" max="100" step="0.5">
+                            </div>
+                        </div>
+
+                        <div class="metric-field">
+                            <label>Link Quality (%) <span class="range-info">[0 to 100%]</span></label>
+                            <div class="input-slider-pair">
+                                <input type="number" id="nodeLinkInput" min="0" max="100" step="1">
+                                <input type="range" id="nodeLinkRange" min="0" max="100" step="1">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="node-live-score-box">
+                        <span>Computed Score:</span>
+                        <span class="score-number" id="inspectorComputedScore">94.2%</span>
+                    </div>
+
+                    <div class="button-group">
+                        <button id="btnSaveNodeMetrics" class="btn btn-primary btn-sm">💾 Save RF Metrics</button>
+                        <button id="btnMakeTopCandidate" class="btn btn-accent btn-sm" title="Boost this miner helmet to pristine condition">⭐ Boost as Best</button>
+                    </div>
+                </section>
+
+                <!-- 4. Simulation Action Triggers -->
+                <section class="control-card action-card">
+                    <div class="card-title">
+                        <span>4. Emergency Failover Action</span>
+                        <span class="doodle-star">💥</span>
+                    </div>
+
+                    <button id="btnTriggerFailover" class="btn btn-danger btn-block btn-pulse">
+                        ⚠️ BREAK MAIN GATEWAY ROUTER!
+                    </button>
+
+                    <div class="button-row">
+                        <button id="btnRandomizeChannels" class="btn btn-secondary">
+                            🎲 Randomize RF
+                        </button>
+
+                        <button id="btnResetSimulation" class="btn btn-outline">
+                            🔄 Reset System
+                        </button>
+                    </div>
+                </section>
+            </div>
+        </aside>
+
+        <!-- ==================== CENTER PANEL: CANVAS NETWORK TOPOLOGY VISUALIZER ==================== -->
+        <section class="panel center-panel">
+            <div class="panel-header canvas-header">
+                <div class="canvas-title-group">
+                    <h2>
+                        <span class="panel-emoji">🗺️</span>
+                        Subterranean 2D Doodle Mesh Map
+                    </h2>
+                    <span class="badge-tag" id="visualizerTopologyTag">Regular Hexagon</span>
+                </div>
+
+                <div class="canvas-controls">
+                    <label class="toggle-control" title="Toggle mining track links between workers">
+                        <input type="checkbox" id="togglePeerLinks" checked>
+                        <span>Tunnel Ring</span>
+                    </label>
+                    <label class="toggle-control" title="Toggle data telemetry particle flow">
+                        <input type="checkbox" id="toggleParticles" checked>
+                        <span>Data Flow</span>
+                    </label>
+                    <label class="toggle-control" title="Show score badges under helmets">
+                        <input type="checkbox" id="toggleMetrics" checked>
+                        <span>Score Badges</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="canvas-container" id="canvasContainer">
+                <canvas id="meshCanvas" width="800" height="660"></canvas>
+                
+                <!-- Floating Visualizer Overlays -->
+                <div class="canvas-overlay canvas-legend">
+                    <div class="legend-item">
+                        <span class="legend-icon">🖥️</span>
+                        <span>Raspberry Pi Monitor (Surface Master Core)</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-icon">📡</span>
+                        <span>2D Gateway Router (Mesh Hub)</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-icon">⛑️</span>
+                        <span>Dirty Yellow Safety Helmet (Miner Node)</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-icon">⭐</span>
+                        <span>Promoted Emergency Gateway Router</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-icon">🛤️</span>
+                        <span>Individual Mining Paths (To Each Worker)</span>
+                    </div>
+                </div>
+
+                <div class="canvas-overlay animation-status-banner" id="animationBanner" style="display: none;">
+                    <div class="banner-spinner"></div>
+                    <div class="banner-content">
+                        <h4 id="bannerTitle">GATEWAY ROUTER OFFLINE!</h4>
+                        <p id="bannerDesc">Raspberry Pi searching for the best dirty helmet to promote...</p>
+                    </div>
+                </div>
+
+                <!-- Hover Tooltip -->
+                <div class="node-tooltip" id="nodeTooltip" style="display: none;">
+                    <div class="tooltip-header" id="ttHeader">ESP32-01</div>
+                    <div class="tooltip-body" id="ttBody">
+                        <!-- Filled by JS -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== RIGHT PANEL: TELEMETRY & DECISION ANALYTICS ==================== -->
+        <aside class="panel right-panel">
+            <div class="panel-header">
+                <h2>
+                    <span class="panel-emoji">📊</span>
+                    Telemetry &amp; Election Rationale
+                </h2>
+            </div>
+
+            <div class="panel-content custom-scrollbar">
+                <!-- 1. Network Status Overview HUD -->
+                <section class="telemetry-card">
+                    <div class="card-title">
+                        <span>Mine Shaft Health</span>
+                        <span class="doodle-star">❤️</span>
+                    </div>
+                    <div class="hud-grid">
+                        <div class="hud-item">
+                            <span class="hud-label">TOTAL NODES</span>
+                            <span class="hud-value" id="hudTotalNodes">6</span>
+                        </div>
+                        <div class="hud-item online">
+                            <span class="hud-label">ONLINE</span>
+                            <span class="hud-value" id="hudOnlineNodes">6</span>
+                        </div>
+                        <div class="hud-item offline">
+                            <span class="hud-label">OFFLINE</span>
+                            <span class="hud-value" id="hudOfflineNodes">0</span>
+                        </div>
+                        <div class="hud-item status">
+                            <span class="hud-label">STATUS</span>
+                            <span class="hud-value" id="hudRecoveryStatus">HEALTHY</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 2. Active & Failed Gateway Cards -->
+                <section class="gateway-cards-grid">
+                    <div class="gw-card active-gw-card">
+                        <div class="gw-card-header">
+                            <span>📡 ACTIVE GATEWAY ROUTER</span>
+                        </div>
+                        <div class="gw-card-body">
+                            <span class="gw-id" id="activeGwId">ESP32-01</span>
+                            <div class="gw-metric">
+                                <span>Quality Score:</span>
+                                <strong id="activeGwScore">88.5%</strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="gw-card failed-gw-card" id="failedGwCard">
+                        <div class="gw-card-header">
+                            <span>💥 FAILED ROUTER</span>
+                        </div>
+                        <div class="gw-card-body">
+                            <span class="gw-id" id="failedGwId">NONE</span>
+                            <div class="gw-metric">
+                                <span>Status:</span>
+                                <strong id="failedGwStatus">OFFLINE</strong>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 3. Candidate Ranking Table -->
+                <section class="telemetry-card">
+                    <div class="card-title">
+                        <span>Helmet Candidate Rankings</span>
+                        <span class="badge-mini" id="candidateCountBadge">5 Eligible</span>
+                    </div>
+
+                    <div class="table-wrapper">
+                        <table class="ranking-table" id="rankingTable">
+                            <thead>
+                                <tr>
+                                    <th>Rank</th>
+                                    <th>Worker</th>
+                                    <th>RSSI</th>
+                                    <th>SNR</th>
+                                    <th>Loss</th>
+                                    <th>LQI</th>
+                                    <th>Score</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="rankingTableBody">
+                                <!-- Populated dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- 4. Election Rationale Box -->
+                <section class="telemetry-card" id="electionRationaleCard">
+                    <div class="card-title">
+                        <span>🍓 Raspberry Pi Election Decision</span>
+                    </div>
+                    <div class="rationale-content" id="electionRationaleText">
+                        Normal mine operation active. The Raspberry Pi and primary gateway router ESP32-01 maintain stable links with all worker helmets.
+                    </div>
+                </section>
+
+                <!-- 5. Chronological Event Log Stream -->
+                <section class="telemetry-card log-card">
+                    <div class="card-title">
+                        <span>📜 Adventure Event Log</span>
+                        <div class="log-actions">
+                            <button id="btnCopyLog" class="btn-icon" title="Copy Log to Clipboard">📋</button>
+                            <button id="btnClearLog" class="btn-icon" title="Clear Event Log">🗑️</button>
+                        </div>
+                    </div>
+                    <div class="event-log-container custom-scrollbar" id="eventLogContainer">
+                        <!-- Populated dynamically -->
+                    </div>
+                </section>
+            </div>
+        </aside>
+    </main>
+
+    <!-- Global Toast Notification -->
+    <div id="toast" class="toast-notification"></div>
+
+    <script src="/static/script.js"></script>
+</body>
+</html>

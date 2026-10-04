@@ -1,0 +1,4 @@
+#pragma once
+
+#define WIFI_SSID "YOUR_PI_HOTSPOT_SSID"
+#define WIFI_PASSWORD "YOUR_PI_HOTSPOT_PASSWORD"

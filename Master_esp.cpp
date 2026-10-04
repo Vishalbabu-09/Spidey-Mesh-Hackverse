@@ -1,15 +1,15 @@
 #include <ESP8266WiFi.h>
 #include <espnow.h>
+#include "local_config.h"
 
 
 // =====================================================
 // BLOCK 1: RASPBERRY PI WI-FI CONFIGURATION
 // =====================================================
 
-const char* WIFI_SSID = "ecstaticfive";
+const char* WIFI_SSID_VALUE = WIFI_SSID;
 
-// CHANGE THIS TO YOUR ACTUAL PI HOTSPOT PASSWORD
-const char* WIFI_PASSWORD = "ecstaticfi";
+const char* WIFI_PASSWORD_VALUE = WIFI_PASSWORD;
 
 const char* PI_IP = "192.168.4.1";
 
@@ -119,8 +119,8 @@ bool connectToPiWiFi()
   WiFi.mode(WIFI_STA);
 
   WiFi.begin(
-    WIFI_SSID,
-    WIFI_PASSWORD
+    WIFI_SSID_VALUE,
+    WIFI_PASSWORD_VALUE
   );
 
   int attempts = 0;

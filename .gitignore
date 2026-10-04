@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+
+# Local configuration / secrets
+local_config.h
+*.secret
+*.secrets
+
+# Arduino / PlatformIO
+.pio/
+build/
+*.bin
+*.elf
+*.hex
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db

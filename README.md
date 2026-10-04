@@ -2,7 +2,7 @@
 
 ## HackVerse: Into the Web
 
-**🥈 2nd Prize — Hardware Track**  
+**🥈 2nd Prize — Hardware Track**
 **💰 ₹10,000 Cash Prize**
 
 Spidey-Mesh is an ESP8266-based wireless safety and telemetry prototype developed for **HackVerse: Into the Web**.
@@ -373,7 +373,7 @@ It should not be treated as a certified industrial safety system.
 
 ### HackVerse: Into the Web
 
-**🥈 2nd Prize — Hardware Track**  
+**🥈 2nd Prize — Hardware Track**
 **💰 ₹10,000 Cash Prize**
 
 Spidey-Mesh was developed and presented as a hardware-focused project combining:
@@ -461,7 +461,7 @@ Spidey-Mesh-Hackverse/
 
 ## 👥 Team
 
-**Spidey-Mesh Team**  
+**Spidey-Mesh Team**
 **HackVerse: Into the Web**
 
 Add the final team member names and roles here before publishing the project on LinkedIn or other public platforms.

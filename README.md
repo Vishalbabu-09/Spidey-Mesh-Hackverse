@@ -459,43 +459,27 @@ Spidey-Mesh-Hackverse/
 
 ---
 
-## 👥 Team
+## 👥 Team — ECSTATIC FIVE
 
-**Spidey-Mesh Team**
-**HackVerse: Into the Web**
+**Project:** Spidey-Mesh
 
-Add the final team member names and roles here before publishing the project on LinkedIn or other public platforms.
+### Team Members
 
-Example:
+- **T S VISHAL BABU**
+- **S ANIRUDH**
+- **J SARAN**
+- **LOKNATH P**
+- **VISHWA S**
 
-- Name — Hardware / Embedded Systems
-- Name — Software / Simulation
-- Name — IoT / Gateway
+## 📸 Team & Hackathon
 
----
+### ECSTATIC FIVE
 
-## 📸 Media
+![ECSTATIC FIVE — HackVerse](images/team.jpg)
 
-Recommended project media:
+### Building Spidey-Mesh
 
-- Hardware prototype photographs
-- ESP8266 setup photographs
-- Simulator screenshots
-- Architecture diagram
-- Demonstration video
-- Hackathon presentation
-- Award photograph
-
-A future `docs/` directory can be used for project media:
-
-```text
-docs/
-├── hardware.jpg
-├── simulator.png
-├── architecture.png
-├── demonstration.jpg
-└── award.jpg
-```
+![ECSTATIC FIVE building Spidey-Mesh](images/building-spidey-mesh.jpg)
 
 ---
 
